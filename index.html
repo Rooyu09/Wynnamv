@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wynn Edits | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+  <link rel="icon" href="https://via.placeholder.com/32" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+    header {
+      position: relative;
+    }
+    .banner-image {
+      width: 100%;
+      height: auto;
+      max-height: 300px;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      z-index: 10;
+      position: relative;
+    }
+    .logo img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .nav-links a {
+      color: #ffffff;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .hero-content {
+      text-align: center;
+      z-index: 5;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 40px 30px 100px;
+      border-radius: 10px;
+      margin-top: 30px;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 20px;
+    }
+    .hero-content h1,
+    .hero-content p,
+    .section-title,
+    .about p,
+    .service-list p,
+    .testimonial {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .in-view {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+    .hero-content h1 {
+      font-size: 3.5rem;
+      color: #00ccff;
+    }
+    .hero-content p {
+      font-size: 1.5rem;
+      margin: 15px 0 25px;
+    }
+    .btn {
+      padding: 6px 12px;
+      background: #00e1ff;
+      color: #0d0d0d;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      width: fit-content;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background: #0488fc;
+      color: #030303;
+    }
+    section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .section-title {
+      font-size: 2rem;
+      color: #1fc3e7;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+    .video-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #1c1c1c;
+      cursor: pointer;
+    }
+    .video-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+    }
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: 0.3s;
+    }
+    .video-card:hover .overlay {
+      opacity: 1;
+    }
+    .overlay .play-button {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s;
+    }
+    .overlay .play-button:hover {
+      transform: scale(1.1);
+    }
+    .overlay .play-button svg {
+      width: 40px;
+      height: 40px;
+      stroke: #ffffff;
+      stroke-width: 2;
+      fill: none;
+    }
+    .services, .about, .testimonials, .contact {
+      text-align: center;
+    }
+    .service-list, .testimonial-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .testimonial {
+      background: #1c1c1c;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .socials {
+      display: none;
+    }
+    .contact-icons a {
+      display: inline-block;
+      margin: 10px;
+      text-decoration: none;
+      color: #00ccff;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .contact-icons a:hover {
+      color: #00aeff;
+      transform: scale(1.05);
+    }
+    .contact-icons img {
+      vertical-align: middle;
+      width: 24px;
+      height: 24px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+    .contact-icons a:hover img {
+      filter: brightness(150%);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox iframe {
+      width: 90%;
+      height: 70vh;
+      max-width: 900px;
+      border: none;
+      border-radius: 10px;
+    }
+    .lightbox.active {
+      display: flex;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <div class="logo">
+        <img src="IMG-20250718-WA0712.jpg" alt="Logo">
+      </div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#showreel">Edits</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <img class="banner-image" src="IMG-20250718-WA0713.jpg" alt="Banner"/>
+    <div class="hero-content">
+      <h1>Hi, I'm Wynn</h1>
+      <p>Video Editor & Graphics Designer</p>
+      <a href="#about" class="btn">Let’s Get Started</a>
+    </div>
+  </header>
+
+  <section id="about" class="about">
+    <h2 class="section-title">About Me</h2>
+    <p>I'm a freelance video editor with 3+ years of experience, passionate about video editing and graphics designing. I’ve worked with creators, and streamers to bring their vision to life.</p>
+    <p>Tools: Alight Motion, Node Video, Ibis Paint X, PixelLab, CapCut.</p>
+  </section>
+
+  <section id="showreel">
+    <h2 class="section-title">My Best Edits</h2>
+    <div class="video-grid">
+      <div class="video-card" onclick="openLightbox('video1.mp4')">
+        <img src="IMG-20250719-WA0254.jpg" alt="Video 1" />
+        <div class="overlay">
+          <div class="play-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <polygon points="6 4 20 12 6 20 6 4" fill="#ffffff"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="video-card" onclick="openLightbox('video2.mp4')">
+        <img src="IMG-20250719-WA0255.jpg" alt="Video 2" />
+        <div class="overlay">
+          <div class="play-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <polygon points="6 4 20 12 6 20 6 4" fill="#ffffff"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="video-card" onclick="openLightbox('Video from Rooyu (1).mp4')">
+        <img src="Photo from Rooyu.jpg" alt="Video 2" />
+        <div class="overlay">
+          <div class="play-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <polygon points="6 4 20 12 6 20 6 4" fill="#ffffff"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="video-card" onclick="openLightbox('Video from Rooyu.mp4')">
+        <img src="Photo from Rooyu (1).jpg" alt="Video 2" />
+        <div class="overlay">
+          <div class="play-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <polygon points="6 4 20 12 6 20 6 4" fill="#ffffff"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <h2 class="section-title">Services</h2>
+    <div class="service-list">
+      <p>🎞️ Video Editing – Cut, Color grading, Smooth Transitions</p>
+      <p>💻 Graphics Design – Posters, Charts</p>
+      <p>📈 Social Media Edits – YouTube, TikTok, Reels</p>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <h2 class="section-title">Testimonials</h2>
+    <div class="testimonial-list">
+      <div class="testimonial">“Working with Wynn was effortless. He knew exactly what my gaming content needed.” – Rooyu</div>
+      <div class="testimonial">“It's hard to find an editor who listens. wynn paid close attention to what I wanted and delivered it perfectly to what I needed.” – Lele</div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2 class="section-title">Contact</h2>
+    <div>
+      <p>You can reach me at:</p>
+      
+      <div class="contact-icons">
+        <a href="https://youtube.com/@wynamv" target="_blank">
+          <img src="https://img.icons8.com/ios-filled/50/00ccff/youtube-play.png" alt="YouTube" /> YouTube
+        </a>
+        <a href="https://instagram.com/wynnamv" target="_blank">
+          <img src="https://img.icons8.com/ios-filled/50/00ccff/instagram-new.png" alt="Instagram" /> Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <iframe id="lightbox-video" src="" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('h1, p, .section-title, .about p, .service-list p, .testimonial').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Lightbox video playback
+    function openLightbox(videoUrl) {
+      const lightbox = document.getElementById('lightbox');
+      const videoFrame = document.getElementById('lightbox-video');
+      videoFrame.src = videoUrl + '?autoplay=1';
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      const videoFrame = document.getElementById('lightbox-video');
+      videoFrame.src = '';
+      lightbox.classList.remove('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === "Escape") closeLightbox();
+    });
+  </script>
+</body>
+</html>
